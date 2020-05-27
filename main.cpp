@@ -7,11 +7,10 @@ static int s_Buffer[1024];
 char rx_buffer[10];
 int idx = 0;
 
-void set_number(void) {
+void print_fibonacci_numbers(void) {
   int num;
   num = atoi((const char *)rx_buffer);
-  pc.printf("num = %d \r\n", num);
-  // 
+  pc.printf("Num = %d \r\n", num);
   for (int i = 0; i < num; i++){
     if (i % 5 == 0 && i != 0) pc.printf("\r\n");
     pc.printf(" %d ", s_Buffer[i]);
@@ -24,8 +23,8 @@ void rx_handler(void) {
   ch = pc.getc();
   pc.putc(ch);
   rx_buffer[idx++] = ch;
-  if (ch == 0x0D)
-  {                //CR
+  if (ch == 0x0D) //CR
+  {                
     pc.putc(0x0A); //LF
     rx_buffer[--idx] = '\0';
     idx = 0;
@@ -37,10 +36,9 @@ int main() {
   pc.attach(&rx_handler);
   pc.printf("\r\nWelcome to Lab10_1!\r\n"); 
   
-  // calculate fibonacci
   s_Buffer[0] = 0;
   s_Buffer[1] = 1; 
-  // 아래 반복을 num까지만 하게 해도 될듯.
+
   for (int i = 2; i < ARRAY_SIZE(s_Buffer); i++) {
     s_Buffer[i] = s_Buffer[i - 1] + s_Buffer[i - 2];
   }
@@ -49,7 +47,7 @@ int main() {
     flag = 0;
       pc.printf("Enter the number (N<=40): ");
       while (flag != 1) {}
-      set_number();
+      print_fibonacci_numbers();
       ThisThread::sleep_for(500);
   }
 }
